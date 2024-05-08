@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-import axios from "axios";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 import useAxios from "../hooks/useAxios";
 
@@ -14,14 +12,32 @@ const EditMovieForm = (props) => {
     metascore: 0,
     description: "",
   });
+   
+  console.log("Editmovie componentine girdim")
 
   const { id } = useParams();
 
+  const url = `https://nextgen-project.onrender.com/api/s11d3/movies/${id}`;
+
   const { data, sendRequest, setData, error, loading, METHODS } =
-    useAxios(movie,"https://nextgen-project.onrender.com/api/s11d3/movies/:id");
+    useAxios({ initialData:movie, baseURL : url});
+        
+    
+  useEffect(() => {
+    const method = METHODS.GET;
+      console.log("girdim");
+      sendRequest({url,method});
+      //setMovie({...data});
+      console.log("2 ","data = ",data, " url :",url ,"method :",METHODS.GET);
+  }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("data güncellendi:", data);
+    if(data.title)
+    setMovie({ ...data });
+  }, [data]);
 
+   //console.log(movie);
   const handleChange = (e) => {
     setMovie({
       ...movie,
@@ -31,10 +47,18 @@ const EditMovieForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const method = METHODS.PUT;
+    console.log(movie);
+    sendRequest( {url , method , data : movie, redirect: `/movies/${id}`} );   
+    console.log("submit edildi", movie);
+    console.log("submit edildi data", data);
+    setMovies(data);
+    //setMovies([...data]);
   };
 
   const { title, director, genre, metascore, description } = movie;
-
+ console.log(title, director, genre, metascore, description);
   return (
     <div className="bg-white rounded-md shadow flex-1 dark:bg-slate-800 dark:text-white">
       <form onSubmit={handleSubmit}>

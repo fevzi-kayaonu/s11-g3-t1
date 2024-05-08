@@ -14,7 +14,8 @@ export default function useAxios({
   baseURL = 'https://nextgen-project.onrender.com/api/s11d3',
 }) {
   const [data, setData] = useState(initialData);
-
+  console.log("data:",data);
+  console.log("baseURL:",baseURL);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 

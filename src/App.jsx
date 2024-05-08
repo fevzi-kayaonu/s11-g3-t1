@@ -8,9 +8,16 @@ import MovieHeader from "./components/MovieHeader";
 import FavoriteMovieList from "./components/FavoriteMovieList";
 import axios from "axios";
 import useLocalStorage from "./hooks/useLocalStorage";
+import useAxios from "./hooks/useAxios";
+import { AddMovieForm } from "./components/AddMovieForm";
 
 const App = (props) => {
   const [movies, setMovies] = useState([]);
+
+  const { data ,sendRequest,METHODS } =
+    useAxios({});
+
+  const darkMode = true;
 
   useEffect(() => {
     axios
@@ -23,8 +30,19 @@ const App = (props) => {
       });
   }, []);
 
-  const deleteMovie = (id) => {};
+  const deleteMovie = (id) => {
+    const url = `https://nextgen-project.onrender.com/api/s11d3/movies/${id}`;    
+    const method = METHODS.DELETE;    
+    sendRequest( {url , method, redirect: `/movies`} ); 
+    console.log("moviese giren data ",data);    
+    setMovies(data);
+  };
 
+/*
+  useEffect(() => {
+      
+  }, [data]);
+*/
   const addToFavorites = (movie) => {};
 
   return (
@@ -50,16 +68,19 @@ const App = (props) => {
         <div className="flex flex-col sm:flex-row gap-4">
           <FavoriteMovieList darkMode={darkMode} />
           <Switch>
-            <Route path="/movies/:id">
-              <Movie addToFavorites={addToFavorites} />
+          <Route exact path="/movies/add">
+              <AddMovieForm  setMovies={setMovies}/>
+            </Route>
+            <Route exact path="/movies/:id">
+              <Movie addToFavorites={addToFavorites} deleteMovie={deleteMovie} />
             </Route>
             <Route path="/movies/edit/:id">
               <EditMovieForm setMovies={setMovies} />
             </Route>
-            <Route path="/movies">
+            <Route exact path="/movies">
               <MovieList movies={movies} />
             </Route>
-            <Route path="/">
+            <Route exact path="/">
               <Redirect to="/movies" />
             </Route>
           </Switch>
