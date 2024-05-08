@@ -15,7 +15,7 @@ const EditMovieForm = (props) => {
     description: "",
   });
 
-  const id = useParams();
+  const { id } = useParams();
 
   const { data, sendRequest, setData, error, loading, METHODS } =
     useAxios(movie,"https://nextgen-project.onrender.com/api/s11d3/movies/:id");
