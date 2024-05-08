@@ -1,17 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import useAxios from "../hooks/useAxios";
 
 const EditMovieForm = (props) => {
   const { setMovies } = props;
   const [movie, setMovie] = useState({
-    title: '',
-    director: '',
-    genre: '',
+    title: "",
+    director: "",
+    genre: "",
     metascore: 0,
-    description: '',
+    description: "",
   });
+
+  const id = useParams();
+
+  const { data, sendRequest, setData, error, loading, METHODS } =
+    useAxios(movie,"https://nextgen-project.onrender.com/api/s11d3/movies/:id");
+
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     setMovie({

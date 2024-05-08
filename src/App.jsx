@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
-import MovieList from './components/MovieList';
-import Movie from './components/Movie';
-import EditMovieForm from './components/EditMovieForm';
-import MovieHeader from './components/MovieHeader';
-import FavoriteMovieList from './components/FavoriteMovieList';
-import axios from 'axios';
-import useLocalStorage from './hooks/useLocalStorage';
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import MovieList from "./components/MovieList";
+import Movie from "./components/Movie";
+import EditMovieForm from "./components/EditMovieForm";
+import MovieHeader from "./components/MovieHeader";
+import FavoriteMovieList from "./components/FavoriteMovieList";
+import axios from "axios";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 const App = (props) => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     axios
-      .get('https://nextgen-project.onrender.com/api/s11d3/movies')
+      .get("https://nextgen-project.onrender.com/api/s11d3/movies")
       .then((res) => {
         setMovies(res.data);
       })
@@ -30,7 +30,7 @@ const App = (props) => {
   return (
     <div id="main-container">
       <nav className=" bg-zinc-800 text-white px-6 py-3 dark:bg-gray-800 ">
-        <h1 className="text-xl text-white">HTTP / CRUD Film Projesi</h1>{' '}
+        <h1 className="text-xl text-white">HTTP / CRUD Film Projesi</h1>{" "}
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
@@ -53,7 +53,9 @@ const App = (props) => {
             <Route path="/movies/:id">
               <Movie addToFavorites={addToFavorites} />
             </Route>
-
+            <Route path="/movies/edit/:id">
+              <EditMovieForm setMovies={setMovies} />
+            </Route>
             <Route path="/movies">
               <MovieList movies={movies} />
             </Route>
